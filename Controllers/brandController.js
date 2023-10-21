@@ -1,6 +1,6 @@
 import Brand from '../models/brandModel.js';
 
-const createBrand = async(req, res) => {
+export const createBrand = async(req, res) => {
 try {
     const { name, categories } = req.body;
     const brand = new Brand({ name, categories });
@@ -11,4 +11,13 @@ try {
 }
 };
 
-export default createBrand;
+// getAllBrands
+const getAllBrands = async (req, res) => {
+    try {
+        const brands = await Brand.find();
+        res.status(200).json(brands);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to fetch brands' });
+    }
+    };
