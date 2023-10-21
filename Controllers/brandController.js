@@ -27,6 +27,9 @@ export const deleteBrand = async(req, res) => {
     try {
         const brandId = req.params.id;
         const deletedBrand = await Brand.findByIdAndRemove(brandId);
+        if (!deletedBrand) {
+            return res.status(404).json({ message: 'Brand not found' });
+        }
         res.status(200).json(deletedBrand);
     } catch (error) {
         console.error(error);
