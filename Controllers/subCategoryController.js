@@ -12,6 +12,8 @@ try {
 }
 };
 
+// getAllSubCategories
+
 export const getAllSubCategories = async (req, res) => {
     try {
         const subCategories = await SubCategory.find();
@@ -19,4 +21,22 @@ export const getAllSubCategories = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch sub-categories', error: error.message });
     }
+};
+
+// deleteSubCategory
+
+export const deleteSubCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedSubC = await SubCategory.findByIdAndDelete(id);
+
+        if (!deletedSubC) {
+        return res.status(404).json({ message: 'Sub-category not found' });
+        }
+
+        res.status(200).json({ message: 'Sub-category deleted successfully' });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to delete sub-category', error: error.message });
+}
 };
