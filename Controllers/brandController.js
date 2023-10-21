@@ -12,7 +12,7 @@ try {
 };
 
 // getAllBrands
-const getAllBrands = async (req, res) => {
+export const getAllBrands = async (req, res) => {
     try {
         const brands = await Brand.find();
         res.status(200).json(brands);
