@@ -20,4 +20,16 @@ export const getAllBrands = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Failed to fetch brands' });
     }
-    };
+};
+
+// deleteBrand
+export const deleteBrand = async(req, res) => {
+    try {
+        const brandId = req.params.id;
+        const deletedBrand = await Brand.findByIdAndRemove(brandId);
+        res.status(200).json(deletedBrand);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Brand deletion failed' });
+    }
+};

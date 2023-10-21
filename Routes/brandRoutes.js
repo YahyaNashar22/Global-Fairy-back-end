@@ -8,4 +8,7 @@ router.post('/brands', createBrand);
 // getAllBrands
 router.get('/brands', getAllBrands);
 
+// deleteBrand (by id)
+router.delete('/brands/:id', deleteBrand);
+
 export default router;
