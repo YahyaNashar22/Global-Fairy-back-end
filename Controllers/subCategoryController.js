@@ -1,6 +1,6 @@
 import SubCategory from '../models/subCategoryModel.js'; // Import the 'SubCategory' model.
 
-const createSubCategory = async (req, res) => {
+export const createSubCategory = async (req, res) => {
 try {
     const { name, category } = req.body;
     const subCategory = new SubCategory({ name, category });
@@ -12,4 +12,11 @@ try {
 }
 };
 
-export default createSubCategory;
+export const getAllSubCategories = async (req, res) => {
+    try {
+        const subCategories = await SubCategory.find();
+        res.status(200).json(subCategories);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch sub-categories', error: error.message });
+    }
+};
