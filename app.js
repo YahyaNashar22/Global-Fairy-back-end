@@ -1,7 +1,7 @@
 import express from "express";
 import {} from "dotenv/config";
 import connectDB from "./Config/mongoConfig.js";
-
+import {routes as productRoutes} from "./Routes/productRoutes.js"
 
 const app = express();
 const PORT = process.env.PORT;
@@ -14,3 +14,5 @@ app.listen(PORT, (error) =>{
 } 
 );
 connectDB()
+
+app.use(productRoutes)
