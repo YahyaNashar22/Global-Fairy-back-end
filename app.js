@@ -14,4 +14,3 @@ app.listen(PORT, (error) =>{
 } 
 );
 connectDB()
-app.use(express.json())

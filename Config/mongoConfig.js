@@ -6,7 +6,7 @@ export default function connectDB(){
 
     mongoose.connect(DB_URL)
     .then(() => {
-        console.log('OK')
+        console.log('Database Connected')
 })
 .catch((err) => {
     console.log(err)
