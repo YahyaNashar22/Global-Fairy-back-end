@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 
 const subCategorySchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+    _id: {
+        type: Number,
+    },
     name: {
         type: String,
         required: true,
