@@ -1,6 +1,6 @@
-import Brand from '../models/brandModel.js';
+import Brand from '../Models/brandModel.js';
 
-export const createBrand = async(req, res) => {
+  const createBrand = async(req, res) => {
 try {
     const { name, categories } = req.body;
     const brand = new Brand({ name, categories });
@@ -12,7 +12,7 @@ try {
 };
 
 // getAllBrands
-export const getAllBrands = async (req, res) => {
+ const getAllBrands = async (req, res) => {
     try {
         const brands = await Brand.find();
         res.status(200).json(brands);
@@ -23,7 +23,7 @@ export const getAllBrands = async (req, res) => {
 };
 
 // deleteBrand
-export const deleteBrand = async(req, res) => {
+ const deleteBrand = async(req, res) => {
     try {
         const brandId = req.params.id;
         const deletedBrand = await Brand.findByIdAndRemove(brandId);
@@ -36,3 +36,4 @@ export const deleteBrand = async(req, res) => {
         res.status(500).json({ message: 'Brand deletion failed' });
     }
 };
+export  {deleteBrand , getAllBrands,createBrand}

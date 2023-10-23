@@ -11,6 +11,6 @@ const brandSchema = new mongoose.Schema({
     categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
 });
 
-const Brand = mongoose.model('Brand', brandSchema);
+export default mongoose.model('Brand', brandSchema);
 
-export default Brand;
+// export default Brand;

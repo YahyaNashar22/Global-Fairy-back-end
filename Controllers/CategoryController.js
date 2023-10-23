@@ -1,5 +1,5 @@
-import Category from "../Models/CategoryModel";
-const CategoryController ={
+import Category from "../Models/CategoryModel.js";
+export const CategoryController ={
      
     addCategory: async (req,res) => {
         try{
@@ -12,7 +12,7 @@ const CategoryController ={
 
         }
     },
-    deleteCategry: async (req, res) => {
+    deleteCategory: async (req, res) => {
         const { id } = req.body
         try {
             const deleteCategry = await Category.findByIdAndRemove(id);
@@ -50,4 +50,3 @@ const CategoryController ={
 
 }
 
-export default CategoryController;

@@ -1,17 +1,15 @@
 import express from 'express';
-import { createSubCategory, getAllSubCategories, deleteSubCategory } from '../controllers/brandController.js';
+import { createSubCategory, getAllSubCategories, deleteSubCategory } from '../Controllers/subCategoryController.js';
 
-const router = express.Router();
+export const subCategoryRouter = express.Router();
 
-router.post('/subcategories', createSubCategory);
+subCategoryRouter.post('/add', createSubCategory);
 
 // getAllSubCategories
 
-router.get('/subcategories', getAllSubCategories);
+subCategoryRouter.get('/read', getAllSubCategories);
 
 // deleteSubCategory
 
-router.delete('/subcategories/:id', deleteSubCategory);
+subCategoryRouter.delete('/delete', deleteSubCategory);
 
-
-export default router;
