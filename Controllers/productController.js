@@ -9,7 +9,8 @@ import  Product from "../Models/productModel.js";
 export const productController = {
 
     addProduct: async (req, res) => {
-        const { name, description, price, details, images, brand, category, subCategory } = req.body
+        const { name, description, price, details, brand, category, subCategory } = req.body
+        const images=req.files.path
         try {
             const product = await Product.create({ name, description, price, details, images, brand, category, subCategory })
             res.json(product)
@@ -46,7 +47,8 @@ export const productController = {
     },
 
     editProduct: async (req, res) => {
-        const { id, name, description, price, details, images, brand, category, subCategory } = req.body
+        const { id, name, description, price, details, brand, category, subCategory } = req.body
+        const images=req.files.path
         try {
             const editedProduct = await Product.findByIdAndUpdate(id, { name, description, price, details, images, brand, category, subCategory }, { new: true });
             res.status(200).json(editedProduct)
@@ -94,7 +96,6 @@ export const productController = {
                 category: category,
                 $and: []
             }
-
             if (brands && brands.length > 0) {
                 query.$and.push({ brand: { $in: brands } })
             }
