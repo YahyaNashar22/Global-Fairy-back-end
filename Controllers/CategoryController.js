@@ -14,37 +14,38 @@ export const CategoryController ={
         }
     },
     deleteCategory: async (req, res) => {
-        const { id } = req.body
         try {
-            const deleteCategry = await Category.findByIdAndRemove(id);
-            if (!deleteCategry) {
+            const { id } = req.body
+         const category=  await  Category.findByIdAndRemove(id);
+            if (!category) {
                 res.status(404).json({ error: 'Category not found' })
             }
             res.status(200).json({ status: " Deleted" })
 
         } 
         catch (error) {
-            res.status(404).json(error)
+            res.status(404).json(error.message)
         }
     },
 
     getCategories: async (req, res) => {
         try {
-            const Categories = Category.find()
+            const Categories = await Category.find()
             res.status(200).json(Categories)
         }
         catch (error) {
             res.status(404).json({ status: 404, error: error.message })
         }
     },
+    
     getCategory:async (req,res)=>{
         const {id}=req.body
         try {
-            const Category = Category.findById(id)
-            res.status(200).json(Category)
+            const category = await  Category.findById(id)
+            res.status(200).json(category)
         }
         catch (error) {
-            res.status(404).json({ status: 400, error: error })
+            res.status(404).json({ status: 400, error: error.message })
         }
 
     }
