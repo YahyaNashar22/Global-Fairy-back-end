@@ -27,7 +27,7 @@ export const getAllSubCategories = async (req, res) => {
 
 export const deleteSubCategory = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.body;
         const deletedSubC = await SubCategory.findByIdAndDelete(id);
 
         if (!deletedSubC) {
@@ -39,4 +39,15 @@ export const deleteSubCategory = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to delete sub-category', error: error.message });
 }
+};
+
+//get SubCategory
+export const getSubCategory = async (req, res) => {
+    const {id}=req.body
+    try {
+        const subCategory = await SubCategory.findById(id);
+        res.status(200).json(subCategory);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch sub-categories', error: error.message });
+    }
 };

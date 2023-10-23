@@ -22,10 +22,21 @@ try {
     }
 };
 
+// get a brand
+const getBrand = async (req, res) => {
+    const{id}=req.body
+    try {
+        const brand = await Brand.findById(id);
+        res.status(200).json(brand);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to fetch brands' });
+    }
+};
 // deleteBrand
  const deleteBrand = async(req, res) => {
     try {
-        const brandId = req.params.id;
+        const brandId = req.body.id;
         const deletedBrand = await Brand.findByIdAndRemove(brandId);
         if (!deletedBrand) {
             return res.status(404).json({ message: 'Brand not found' });
@@ -36,4 +47,5 @@ try {
         res.status(500).json({ message: 'Brand deletion failed' });
     }
 };
-export  {deleteBrand , getAllBrands,createBrand}
+
+export  {deleteBrand , getAllBrands,createBrand,getBrand}

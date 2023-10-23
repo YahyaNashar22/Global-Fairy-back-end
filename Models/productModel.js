@@ -3,9 +3,6 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const productModel = new Schema({
-    _id: {
-        type: Number,
-    },
     name: {
         type: String,
         required:true

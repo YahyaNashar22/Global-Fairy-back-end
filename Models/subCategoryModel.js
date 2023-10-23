@@ -1,9 +1,6 @@
 import mongoose from 'mongoose';
 
 const subCategorySchema = new mongoose.Schema({
-    _id: {
-        type: Number,
-    },
     name: {
         type: String,
         required: true,

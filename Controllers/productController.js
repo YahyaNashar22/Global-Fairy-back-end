@@ -10,7 +10,7 @@ export const productController = {
 
     addProduct: async (req, res) => {
         const { name, description, price, details, brand, category, subCategory } = req.body
-        const images=req.files.path
+        const images=req.files//Images not wokring
         try {
             const product = await Product.create({ name, description, price, details, images, brand, category, subCategory })
             res.json(product)
@@ -20,10 +20,10 @@ export const productController = {
         }
     },
 
-    getById: async (req, res) => {
+    getById: async (req, res) => {//working
         const { id } = req.body
         try {
-            const product = await Product.findByPk(id);
+            const product = await Product.findById(id);
             res.status(200).json(product)
         } 
         catch (error) {
@@ -31,7 +31,7 @@ export const productController = {
         }
     },
 
-    deleteProduct: async (req, res) => {
+    deleteProduct: async (req, res) => { // working
         const { id } = req.body
         try {
             const deletedProduct = await Product.findByIdAndRemove(id);
@@ -42,13 +42,13 @@ export const productController = {
 
         } 
         catch (error) {
-            res.status(404).json(error)
+            res.status(404).json(error.message)
         }
     },
 
     editProduct: async (req, res) => {
         const { id, name, description, price, details, brand, category, subCategory } = req.body
-        const images=req.files.path
+        const images=req.files
         try {
             const editedProduct = await Product.findByIdAndUpdate(id, { name, description, price, details, images, brand, category, subCategory }, { new: true });
             res.status(200).json(editedProduct)
@@ -57,40 +57,43 @@ export const productController = {
         }
 
     },
-    getAll: async (req, res) => {
+    getAll: async (req, res) => {// working
         try {
-            const products = Product.find()
+            const products = await Product.find()
             res.status(200).json(products)
         }
         catch (error) {
-            res.status(404).json({ status: 400, error: error })
+            res.status(404).json({ status: 404, error: error.message })
         }
     },
 
-    getByCategory: async (req, res) => {
+    getByCategory: async (req, res) => {//working
         let category = req.body.category;
         try {
-            const products = Product.find({ category: category })
+            const products = await Product.find({ category: category })
             res.status(200).json(products)
         }
         catch (error) {
-            res.status(404).json({ status: 400, error: error })
+            res.status(404).json({ status: 404, error: error })
         }
     },
 
-    getByCategoryAndBrand: async (req, res) => {
+    getByCategoryAndBrand: async (req, res) => {//working
         let { category, brand } = req.body
         try {
-            const products = Product.find({ category: category, brand: brand })
+            const products = await Product.find({ category: category, brand: brand })
+            res.status(200).json(products)
         }
         catch (error) {
-            res.status(404).json({ status: 400, error: error })
+            res.status(404).json({ status: 404, error: error })
         }
     },
 
     getByFilter: async (req, res) => {
         try {
-            const { category, brands, subCategories, sizes, colors, prices } = req.body
+            const { category, brands, details,subCategories, colors,sizes, prices } = req.body
+            let color=details.color;
+            let sizesA=details.sizes;
 
             const query = {
                 category: category,
@@ -99,19 +102,20 @@ export const productController = {
             if (brands && brands.length > 0) {
                 query.$and.push({ brand: { $in: brands } })
             }
-            if (subCategories && subCategories.length > 0) {
-                query.$and.push({ subCategory: { $in: subCategories } })
-            }
+            // if (subCategories && subCategories.length > 0) {
+            //     query.$and.push({ subCategory: { $in: subCategories } })
+            // }
             if (sizes && sizes.length > 0) {
-                query.$and.push({ sizes: { $in: sizes } })
+                query.$and.push({ sizes : { $in: sizesA } })
             }
-            if (colors && colors.length > 0) {
-                query.$and.push({ color: { $in: sizes } })
-            }
-            if (prices && prices.length > 0) {
-                query.$and.push({ price: { $in: prices } })
-            }
+            // if (colors && colors.length > 0) {
+            //     query.$and.push({ color: { $in: colors } })
+            // }
+            // if (prices && prices.length > 0) {
+            //     query.$and.push({ price: { $in: prices } })
+            // }
             const products = await Product.find(query)
+            res.status(200).json(products)
         }
         catch (error) {
             res.status(404).json({ status: 400, error: error })
@@ -120,5 +124,3 @@ export const productController = {
 
 }
 
-
-// export default productController
