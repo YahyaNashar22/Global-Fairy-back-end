@@ -3,12 +3,13 @@ export const CategoryController ={
      
     addCategory: async (req,res) => {
         try{
-            const Category = new Category(req.body)
-            await Category.save()
-            res.status(200).json(Category)
+            const category = new Category(req.body)
+            await category.save()
+            // const category=await Category.create(req.body)
+            res.status(200).json(category)
         }
         catch (error) {
-            res.status(404).json({status:400,error:error})
+            res.status(404).json({status:404,error:error.message})
 
         }
     },
@@ -33,7 +34,7 @@ export const CategoryController ={
             res.status(200).json(Categories)
         }
         catch (error) {
-            res.status(404).json({ status: 400, error: error })
+            res.status(404).json({ status: 404, error: error.message })
         }
     },
     getCategory:async (req,res)=>{
