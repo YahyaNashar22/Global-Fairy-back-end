@@ -31,9 +31,7 @@ const productModel = new Schema({
             },
             sizes: [{
                 type: String,
-                enum: ['small', 'medium', 'large', 'Xlarge']
             }
-
             ]
         }
     ],
