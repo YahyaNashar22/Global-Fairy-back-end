@@ -90,11 +90,11 @@ export const productController = {
 
     getByFilter: async (req, res) => {
         try {
-            const { category, brands, colors,sizes,subCategories,prices } = req.body
+            const { category, brands, colors,sizes,subCategories,priceRange } = req.body
             // let color=details.color;
             // let sizesA=details.sizes;
     //  const productss=await Product.find()
-console.log(req.body)
+// console.log(req.body)
             // const query = {
             //     "category": category,
             //     $and: [$and:[]]
@@ -105,28 +105,47 @@ console.log(req.body)
             }
 
             if (subCategories && subCategories.length > 0) {
-                query.$and.push({ "subCategory": { $in: subCategories } })
+                conditions.push({ "subCategory": { $in: subCategories } })
             }
-            // if (sizes && sizes.length > 0) {
-            //     query.$and.$and.push({ "details.size" : { $in: sizesA } })
-            // }
+            if (sizes && sizes.length > 0) {
+                // gte:[{$size:{$setIntersection:[`details.sizes`,sizes]}},1
+                conditions.push({"details.sizes" : {$in :sizes}} )
+            }
             if (colors && colors.length > 0) {
                 conditions.push({ "details.color" : { $in: colors } })
             }
-            // if (prices && prices.length > 0) {
-            //     query.$and.$or.push({ price: { $in: prices } })
-            // }
-            // const products = await Product.find(query)
-            // res.status(200).json(products)
-            // query.$and[0]={$and:conditions}
+            if (priceRange && priceRange.length > 0) {
+                const priceConditions=[]
+                priceRange.forEach(range => 
+                    {
+                    if(range==1){priceConditions.push({"price": { $gt: 0,$lte:15 }})}
+                    if(range==2){priceConditions.push({"price": { $gt: 15,$lte:30 }})}
+
+                    if(range==3){priceConditions.push({"price": { $gt: 30,$lte:45 }})}
+
+                    if(range==4){priceConditions.push({"price": { $gt: 45 }})}
+
+                })
+                conditions.push({$or:priceConditions})
+                // if(priceRange==1){ const min=0,  max=15;}
+                // if(priceRange==2){ const min=15,  max=30;}
+                // if(priceRange==3){ const min=30,  max=45;}
+                // if(priceRange==4){ const min=45}
+                // if(max){
+                // conditions.push({ "price": { $gt: min,$lte:max } })
+                // }
+                // else{
+                //     conditions.push({ "price": { $gt: min } })
+
+                // }
+            }
+           
             const products = await Product.find({
                 "category": category,
                 $and:conditions
             })
 
             res.status(200).json(products)
-            console.log("condition"+conditions)
-console.log(query)      
   }
         catch (error) {
             res.status(404).json({ status: 400, error: error.message })
