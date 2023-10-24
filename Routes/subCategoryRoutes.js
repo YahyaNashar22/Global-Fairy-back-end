@@ -1,17 +1,16 @@
-import express from 'express';
+import express from 'express'; // subCategory
 import { createSubCategory, getAllSubCategories, deleteSubCategory ,getSubCategory} from '../Controllers/subCategoryController.js';
 
 export const subCategoryRouter = express.Router();
 
+// Route to add a subCategory (POST requests to add using the "createSubCategory" function)
 subCategoryRouter.post('/add', createSubCategory);
 
-// getAllSubCategories
-
+// Route to fetch all subCategories (GET requests to read using the "getAllSubCategories" function)
 subCategoryRouter.get('/read', getAllSubCategories);
 
-// deleteSubCategory
-
+// Route to delete a subCategory (DELETE requests to delete using the "deleteSubCategory" function)
 subCategoryRouter.delete('/delete', deleteSubCategory);
+
+// Route to fetch a subCategory (GET requests to readone using the "getSubCategory" function)
 subCategoryRouter.get('/readone', getSubCategory);
-
-

@@ -3,13 +3,14 @@ import { createBrand, getAllBrands, deleteBrand ,getBrand} from '../Controllers/
 
 export const brandRouter = express.Router();
 
+// Route to add a brand (POST requests to add using the "createBrand" function)
 brandRouter.post('/add', createBrand);
 
-// getAllBrands
+// Route to fetch all brands (GET requests to read using the "getAllBrands" function)
 brandRouter.get('/read', getAllBrands);
-// get Brand
+
+// Route to fetch a brand (GET requests to readone using the "getBrand" function)
 brandRouter.get('/readone', getBrand);
 
-// deleteBrand (by id)
+// Route to delete a brand (DELETE requests to delete using the "deleteBrand" function)
 brandRouter.delete('/delete', deleteBrand);
-

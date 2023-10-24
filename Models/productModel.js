@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+// Define the schema for the category 
+// it has the "name, description, price, details[{color, stock, sizes[]}], images, brand, categort and subCategory"
+
 const Schema = mongoose.Schema;
 
 const productModel = new Schema({
@@ -59,7 +62,7 @@ const productModel = new Schema({
 
     }
 }
-
 )
 
+// Create a mongoose model named (Product) based on the (productModel) and export it
 export default mongoose.model('Product', productModel)

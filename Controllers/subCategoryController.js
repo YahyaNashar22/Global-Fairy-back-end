@@ -1,5 +1,6 @@
 import SubCategory from '../Models/subCategoryModel.js'; // Import the 'SubCategory' model.
 
+// Controller function to create a new subCategory
 export const createSubCategory = async (req, res) => {
 try {
     const { name, category } = req.body;
@@ -12,8 +13,7 @@ try {
 }
 };
 
-// getAllSubCategories
-
+// Controller function to fetch all subCategories
 export const getAllSubCategories = async (req, res) => {
     try {
         const subCategories = await SubCategory.find();
@@ -23,7 +23,7 @@ export const getAllSubCategories = async (req, res) => {
     }
 };
 
-// deleteSubCategory
+// Controller function to delete a subCategory
 
 export const deleteSubCategory = async (req, res) => {
     try {
@@ -41,7 +41,7 @@ export const deleteSubCategory = async (req, res) => {
 }
 };
 
-//get SubCategory
+// Controller function to fetch a subCategory
 export const getSubCategory = async (req, res) => {
     const {id}=req.body
     try {

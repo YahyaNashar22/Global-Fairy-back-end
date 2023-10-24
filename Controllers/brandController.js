@@ -1,6 +1,7 @@
 import Brand from '../Models/brandModel.js';
 
-  const createBrand = async(req, res) => {
+// Controller function for creating a new brand
+const createBrand = async(req, res) => {
 try {
     const { name, categories } = req.body;
     const brand = new Brand({ name, categories });
@@ -11,8 +12,8 @@ try {
 }
 };
 
-// getAllBrands
- const getAllBrands = async (req, res) => {
+// Controller function for fetching all brands
+const getAllBrands = async (req, res) => {
     try {
         const brands = await Brand.find();
         res.status(200).json(brands);
@@ -22,7 +23,7 @@ try {
     }
 };
 
-// get a brand
+// Controller function for fetching a brand
 const getBrand = async (req, res) => {
     const{id}=req.body
     try {
@@ -33,8 +34,9 @@ const getBrand = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch brands' });
     }
 };
-// deleteBrand
- const deleteBrand = async(req, res) => {
+
+// Controller function for deleting a brand
+const deleteBrand = async(req, res) => {
     try {
         const brandId = req.body.id;
         const deletedBrand = await Brand.findByIdAndRemove(brandId);
@@ -48,4 +50,4 @@ const getBrand = async (req, res) => {
     }
 };
 
-export  {deleteBrand , getAllBrands,createBrand,getBrand}
+export  {deleteBrand, getAllBrands, createBrand, getBrand}
