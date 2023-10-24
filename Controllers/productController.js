@@ -90,34 +90,46 @@ export const productController = {
 
     getByFilter: async (req, res) => {
         try {
-            const { category, brands, details,subCategories, colors,sizes, prices } = req.body
-            let color=details.color;
-            let sizesA=details.sizes;
-
-            const query = {
-                category: category,
-                $and: [{$and:[]}]
-            }
-            if (brands && brands.length > 0) {
-                query.$and.$and.push({ brand: { $in: brands } })
-            }
-            // if (subCategories && subCategories.length > 0) {
-            //     query.$and.push({ subCategory: { $in: subCategories } })
+            const { category, brands, colors,sizes,subCategories,prices } = req.body
+            // let color=details.color;
+            // let sizesA=details.sizes;
+    //  const productss=await Product.find()
+console.log(req.body)
+            // const query = {
+            //     "category": category,
+            //     $and: [$and:[]]
             // }
+            const conditions=[]
+            if (brands && brands.length > 0) {
+                conditions.push({ "brand": { $in: brands } })
+            }
+
+            if (subCategories && subCategories.length > 0) {
+                query.$and.push({ "subCategory": { $in: subCategories } })
+            }
             // if (sizes && sizes.length > 0) {
-            //     query.$and.$and.push({ sizes.contains(siz) : { $in: sizesA } })
+            //     query.$and.$and.push({ "details.size" : { $in: sizesA } })
             // }
             if (colors && colors.length > 0) {
-                query.$and.$or.push({ color: { $in: colors } })
+                conditions.push({ "details.color" : { $in: colors } })
             }
             // if (prices && prices.length > 0) {
             //     query.$and.$or.push({ price: { $in: prices } })
             // }
-            const products = await Product.find(query)
+            // const products = await Product.find(query)
+            // res.status(200).json(products)
+            // query.$and[0]={$and:conditions}
+            const products = await Product.find({
+                "category": category,
+                $and:conditions
+            })
+
             res.status(200).json(products)
-        }
+            console.log("condition"+conditions)
+console.log(query)      
+  }
         catch (error) {
-            res.status(404).json({ status: 400, error: error })
+            res.status(404).json({ status: 400, error: error.message })
         }
     },
 
