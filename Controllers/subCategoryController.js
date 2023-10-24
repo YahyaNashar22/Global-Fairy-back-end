@@ -51,3 +51,15 @@ export const getSubCategory = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch sub-categories', error: error.message });
     }
 };
+// get the subcategories names for  a categor
+export const getSubForCat= async (req, res) => {
+    const {categoryId}=req.body
+    try {
+        const subCategories = await SubCategory.find({category:categoryId});
+        const subCat = subCategories.map(subC => subC.name)
+
+        res.status(200).json(subCat);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch sub-categories for this category', error: error.message });
+    }
+};
