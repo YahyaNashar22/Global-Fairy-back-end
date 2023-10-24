@@ -1,23 +1,22 @@
+import {} from "body-parser";
 import  Product from "../Models/productModel.js";
-/**
- * Add x
- * Edit
- * Deletex
- * getby Id x
- * get by attributes(color,size,price,brand,categpry,)
- */
+
 export const productController = {
 
     addProduct: async (req, res) => {
-        const { name, description, price, details, brand, category, subCategory } = req.body
-        const images=req.files//Images not wokring
+        const { name, description, price, detail, brand, category, subCategory } = req.body
+        // const images=req.files
+        const images=req.files.map(image => image.path);
+       const details= JSON.parse(detail)
         try {
-            const product = await Product.create({ name, description, price, details, images, brand, category, subCategory })
+            const product = await Product.create({ name, description,details, price,images, brand, category, subCategory })
             res.json(product)
         }
         catch (error) {
-            res.status(404).json({ status: 400, error: error })
+            res.status(404).json({ status: 404, error: error })
         }
+
+        // return res.json({"details": JSON.parse(details),"images": images});
     },
 
     getById: async (req, res) => {//working
@@ -97,22 +96,22 @@ export const productController = {
 
             const query = {
                 category: category,
-                $and: []
+                $and: [{$and:[]}]
             }
             if (brands && brands.length > 0) {
-                query.$and.push({ brand: { $in: brands } })
+                query.$and.$and.push({ brand: { $in: brands } })
             }
             // if (subCategories && subCategories.length > 0) {
             //     query.$and.push({ subCategory: { $in: subCategories } })
             // }
-            if (sizes && sizes.length > 0) {
-                query.$and.push({ sizes : { $in: sizesA } })
-            }
-            // if (colors && colors.length > 0) {
-            //     query.$and.push({ color: { $in: colors } })
+            // if (sizes && sizes.length > 0) {
+            //     query.$and.$and.push({ sizes.contains(siz) : { $in: sizesA } })
             // }
+            if (colors && colors.length > 0) {
+                query.$and.$or.push({ color: { $in: colors } })
+            }
             // if (prices && prices.length > 0) {
-            //     query.$and.push({ price: { $in: prices } })
+            //     query.$and.$or.push({ price: { $in: prices } })
             // }
             const products = await Product.find(query)
             res.status(200).json(products)
