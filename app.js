@@ -6,7 +6,7 @@ import { productRouter } from "./Routes/productRoutes.js";
 import {brandRouter} from "./Routes/brandRoutes.js"
 import {categoryRouter } from "./Routes/CategoryRoutes.js";
 import {subCategoryRouter} from "./Routes/subCategoryRoutes.js"
-import multer from "multer";
+import{contactRouter} from "./Routes/ContactRoutes.js"
 const app = express();
 const PORT = process.env.PORT;
 app.listen(PORT, (error) =>{ 
@@ -25,3 +25,4 @@ app.use('/product', productRouter)
 app.use('/brand',brandRouter)
 app.use('/category',categoryRouter)
 app.use('/subcategory',subCategoryRouter)
+app.use('/contact',contactRouter)
