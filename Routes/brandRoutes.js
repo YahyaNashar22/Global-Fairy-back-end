@@ -1,5 +1,5 @@
 import express from 'express';
-import { createBrand, getAllBrands, deleteBrand ,getBrand,getBrandCategories,categoryBrands} from '../Controllers/brandController.js';
+import { createBrand, getAllBrands, deleteBrand ,getBrand, getBrandCategories, categoryBrands} from '../Controllers/brandController.js';
 
 export const brandRouter = express.Router();
 
@@ -18,4 +18,3 @@ brandRouter.delete('/delete', deleteBrand);
 brandRouter.get('/getCategories',getBrandCategories)
 
 brandRouter.get('/brandscategory',categoryBrands)
-

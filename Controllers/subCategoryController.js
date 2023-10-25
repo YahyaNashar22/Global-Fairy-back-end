@@ -24,7 +24,6 @@ export const getAllSubCategories = async (req, res) => {
 };
 
 // Controller function to delete a subCategory
-
 export const deleteSubCategory = async (req, res) => {
     try {
         const { id } = req.body;
@@ -51,6 +50,7 @@ export const getSubCategory = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch sub-categories', error: error.message });
     }
 };
+
 // get the subcategories names for  a categor
 export const getSubForCat= async (req, res) => {
     const {categoryId}=req.body

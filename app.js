@@ -18,11 +18,10 @@ app.listen(PORT, (error) =>{
 } 
 );
 connectDB()
+
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/product', productRouter)
 app.use('/brand',brandRouter)
 app.use('/category',categoryRouter)
 app.use('/subcategory',subCategoryRouter)
-
-
