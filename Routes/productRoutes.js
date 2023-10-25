@@ -1,5 +1,5 @@
 import express from "express"
-import {productController  as product}from "../Controllers/productController.js"
+import {productController  as product, productController}from "../Controllers/productController.js"
 import upload from "../Middlewares/uploadImage.js"
 
 export const productRouter = express.Router()
@@ -27,3 +27,6 @@ productRouter.get('/category-brand',product.getByCategoryAndBrand)
 
 // Route to filter products based on various criteria (POST requests to filter using the "getByFilter" function)
 productRouter.get('/filter',product.getByFilter)
+
+//Update the stock of a product
+productRouter.put('/updateStock',productController.updateProductStock)
