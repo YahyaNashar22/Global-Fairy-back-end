@@ -45,7 +45,6 @@ const deleteBrand = async(req, res) => {
         }
         res.status(200).json(deletedBrand);
     } catch (error) {
-        console.error(error);
         res.status(500).json({ message: 'Brand deletion failed' });
     }
 };
@@ -57,7 +56,6 @@ const deleteBrand = async(req, res) => {
         const brand = await Brand.findById(id).populate("categories")
         const BrandCategories = brand.categories.map(category => category.name)
         res.status(200).json(BrandCategories)
-        console.log(BrandCategories)
     }
     catch (error) {
         res.status(404).json(error.message)
@@ -70,7 +68,6 @@ const categoryBrands=async(req,res)=>{
         const brands = await Brand.find({"categories":categoryId}).populate("categories")
         const categoryBrands = brands.map(brand => brand.name)
         res.status(200).json(categoryBrands)
-        console.log(categoryBrands)
     }
     catch (error) {
         res.status(404).json(error.message)

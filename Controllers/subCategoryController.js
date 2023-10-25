@@ -53,9 +53,9 @@ export const getSubCategory = async (req, res) => {
 
 // get the subcategories names for  a categor
 export const getSubForCat= async (req, res) => {
-    const {categoryId}=req.body
+    const {id}=req.body
     try {
-        const subCategories = await SubCategory.find({category:categoryId});
+        const subCategories = await SubCategory.find({category:id});
         const subCat = subCategories.map(subC => subC.name)
 
         res.status(200).json(subCat);

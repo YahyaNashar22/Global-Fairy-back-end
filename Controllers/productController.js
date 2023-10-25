@@ -25,7 +25,7 @@ getById: async (req, res) => {
         res.status(200).json(product)
     } 
     catch (error) {
-        res.status(404).json(error)
+        res.status(404).json(error.message)
     }
 },
 
@@ -121,17 +121,17 @@ getByFilter: async (req, res) => {
             const priceConditions=[]
             priceRange.forEach(range => 
                 {
-                if(range==1){priceConditions.push({"price": { $gt: 0,$lte:15 }})}
-                if(range==2){priceConditions.push({"price": { $gt: 15,$lte:30 }})}
+                if(range===1){priceConditions.push({"price": { $gt: 0,$lte:15 }})}
+                if(range===2){priceConditions.push({"price": { $gt: 15,$lte:30 }})}
 
-                if(range==3){priceConditions.push({"price": { $gt: 30,$lte:45 }})}
+                if(range===3){priceConditions.push({"price": { $gt: 30,$lte:45 }})}
 
-                if(range==4){priceConditions.push({"price": { $gt: 45 }})}
+                if(range===4){priceConditions.push({"price": { $gt: 45 }})}
 
             })
             conditions.push({$or:priceConditions})     
         }
-        
+        console.log(conditions)
         const products = await Product.find({
             "category": category,
             $and:conditions

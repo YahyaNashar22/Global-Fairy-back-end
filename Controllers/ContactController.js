@@ -18,8 +18,8 @@ addContact: async (req,res) => {
 // Controller function to fetch contact
 getContact: async (req, res) => {
     try {
-        const Contact = await Contact.find()
-        res.status(200).json(Contact)
+        const contacts = await Contact.find()
+        res.status(200).json(contacts)
     }
     catch (error) {
         res.status(404).json({ status: 404, error: error.message })
