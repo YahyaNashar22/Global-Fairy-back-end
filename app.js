@@ -26,3 +26,4 @@ app.use('/brand',brandRouter)
 app.use('/category',categoryRouter)
 app.use('/subcategory',subCategoryRouter)
 app.use('/contact',contactRouter)
+app.use('/images',express.static('images'));
