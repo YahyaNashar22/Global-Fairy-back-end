@@ -1,5 +1,6 @@
 import {} from "body-parser";
 import  Product from "../Models/productModel.js";
+import fs from "fs"
 
 export const productController = {
 
@@ -10,7 +11,7 @@ addProduct: async (req, res) => {
     const details= JSON.parse(detail)
     try {
         const product = await Product.create({ name, description,details, price,images, brand, category, subCategory })
-        res.json(product)
+        res.status(200).json(product)
     }
     catch (error) {
         res.status(404).json({ status: 404, error: error })
@@ -22,6 +23,9 @@ getById: async (req, res) => {
     const { id } = req.body
     try {
         const product = await Product.findById(id);
+        if(!product){
+            res.status(400).json("Product Not Found")
+        }
         res.status(200).json(product)
     } 
     catch (error) {
@@ -37,6 +41,12 @@ deleteProduct: async (req, res) => {
         if (!deletedProduct) {
             res.status(404).json({ error: 'Product not found' })
         }
+        for(let i=0; i<deletedProduct.images.length; i++){
+            fs.unlink(deletedProduct.images[i],(err)=>{
+                if(err) console.log(err);
+                return;
+            })
+        }
         res.status(200).json({ status: "Product Deleted" })
 
 } 
@@ -49,18 +59,36 @@ catch (error) {
 editProduct: async (req, res) => {
     const { id, name, description, price, details, brand, category, subCategory } = req.body
     const updatedFields={ name, description, price, details, brand, category, subCategory }
-        if(req.files) {
-        updatedFields.images=req.files.map(image => image.path)
-    }
-    console.log(req.body)
+    const editedProduct= await Product.findById(id)
+    // const oldImages=[]
+    if(req.files) {
+        updatedFields.images=req.files.map(image => image.path) }
+    if(editedProduct){
+        const oldImages=editedProduct.images.map(image=>image.split('/')[1])
+        console.log(oldImages)
         details ? details= JSON.parse(details): ''
-    try {
-        const editedProduct = await Product.findByIdAndUpdate(id,updatedFields , { new: true });
-        res.status(200).json(editedProduct)
-    } 
-    catch (error) {
-        res.status(500).json(error.message)
+        try {
+           await editedProduct.updateOne(updatedFields,{new:true})
+           
+           for(let i=0; i<oldImages.length; i++){
+            fs.unlink(oldImages[i],(err)=>{
+                if(err) console.log(err.message);
+                return;
+            })
+        }
+            // const editedProduct = await Product.findByIdAndUpdate(id,updatedFields , { new: true });
+            res.status(200).json(editedProduct)
+        } 
+        catch (error) {
+            res.status(500).json(error.message)
+        }
     }
+    else{
+        res.status(500).json("Product Not Found")
+
+    }
+
+   
 
 },
 
