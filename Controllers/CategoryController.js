@@ -41,7 +41,7 @@ getCategories: async (req, res) => {
     }
 },
 
-// Controller function to fetch a specific category
+// Controller function to fetch a specific category by id
 getCategory:async (req,res)=> {
     const {id}=req.body
     try {
@@ -52,4 +52,19 @@ getCategory:async (req,res)=> {
         res.status(404).json({ status: 400, error: error.message })
     }
 }
+,
+// Controller function to fetch a specific category by name
+getCategoryByName:async (req,res)=> {
+    const {name}=req.body
+    try {
+        const category = await Category.findOne({name:name})
+        res.status(200).json(category)
+    }
+    catch (error) {
+        res.status(404).json({ status: 400, error: error.message })
+    }
+}
+
+
+
 }

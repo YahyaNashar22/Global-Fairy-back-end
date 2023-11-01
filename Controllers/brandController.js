@@ -15,7 +15,7 @@ try {
 // Controller function for fetching all brands
  const getAllBrands = async (req, res) => {
     try {
-        const brands = await Brand.find();
+        const brands = await Brand.find().populate('categories');
         res.status(200).json(brands);
     } catch (error) {
         console.error(error);
@@ -34,7 +34,17 @@ const getBrand = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch brands' });
     }
 };
+const getBrandByName=async(req,res)=>{
+    const {name}=req.body
+    try {
+        const brand = await Brand.findOne({name:name}).populate('categories');
+        res.status(200).json(brand);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to fetch brands' });
+    }
 
+}
 // Controller function to delete a brand
 const deleteBrand = async(req, res) => {
     try {
@@ -74,4 +84,4 @@ const categoryBrands=async(req,res)=>{
     }
 }
 
-export { deleteBrand, getAllBrands, createBrand, getBrand, getBrandCategories ,categoryBrands} 
+export { deleteBrand, getAllBrands, createBrand, getBrand, getBrandCategories ,categoryBrands,getBrandByName} 

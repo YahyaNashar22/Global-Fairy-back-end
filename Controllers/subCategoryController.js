@@ -51,7 +51,7 @@ export const getSubCategory = async (req, res) => {
     }
 };
 
-// get the subcategories names for  a categor
+// get the subcategories names for  a category
 export const getSubForCat= async (req, res) => {
     const {id}=req.body
     try {
