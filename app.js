@@ -7,6 +7,7 @@ import {brandRouter} from "./Routes/brandRoutes.js"
 import {categoryRouter } from "./Routes/CategoryRoutes.js";
 import {subCategoryRouter} from "./Routes/subCategoryRoutes.js"
 import{contactRouter} from "./Routes/ContactRoutes.js"
+import cors from "cors"
 const app = express();
 const PORT = process.env.PORT;
 app.listen(PORT, (error) =>{ 
@@ -27,3 +28,4 @@ app.use('/category',categoryRouter)
 app.use('/subcategory',subCategoryRouter)
 app.use('/contact',contactRouter)
 app.use('/images',express.static('images'));
+app.use(cors())
