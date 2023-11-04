@@ -55,7 +55,7 @@ getCategory:async (req,res)=> {
 ,
 // Controller function to fetch a specific category by name
 getCategoryByName:async (req,res)=> {
-    const {name}=req.body
+    const {name}=req.params
     try {
         const category = await Category.findOne({name:name})
         res.status(200).json(category)

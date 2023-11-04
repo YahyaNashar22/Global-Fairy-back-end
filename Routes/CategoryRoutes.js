@@ -15,4 +15,4 @@ categoryRouter.get('/read',CategoryController.getCategories);
 // Route to fetch a category (GET requests to readone using the "getCategory" function)
 categoryRouter.get('/readOne',CategoryController.getCategory);
 
-categoryRouter.get('/readByName',CategoryController.getCategoryByName)
+categoryRouter.get('/readByName/:name',CategoryController.getCategoryByName)

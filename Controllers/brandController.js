@@ -35,7 +35,7 @@ const getBrand = async (req, res) => {
     }
 };
 const getBrandByName=async(req,res)=>{
-    const {name}=req.body
+    const {name}=req.params
     try {
         const brand = await Brand.findOne({name:name}).populate('categories');
         res.status(200).json(brand);

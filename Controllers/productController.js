@@ -95,7 +95,7 @@ editProduct: async (req, res) => {
 // Controller function to fetch all products
 getAll: async (req, res) => {
     try {
-        const products = await Product.find()
+        const products = await Product.find().populate(['brand','category','subCategory'])
         res.status(200).json(products)
     }
     catch (error) {
@@ -117,13 +117,13 @@ getByCategory: async (req, res) => {
 
 // Controller function to fetch products by category and brand
 getByCategoryAndBrand: async (req, res) => {
-    let { category, brand } = req.body
+    let { category, brand } = req.query
     try {
         const products = await Product.find({ category: category, brand: brand })
         res.status(200).json(products)
     }
     catch (error) {
-        res.status(404).json({ status: 404, error: error })
+        res.status(404).json({ status: 404, error: error.message })
     }
 },
 

@@ -19,4 +19,4 @@ brandRouter.get('/getCategories',getBrandCategories)
 
 brandRouter.get('/brandscategory',categoryBrands)
 
-brandRouter.get('/readByName',getBrandByName)
+brandRouter.get('/readByName/:name',getBrandByName)
