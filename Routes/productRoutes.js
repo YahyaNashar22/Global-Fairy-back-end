@@ -8,7 +8,7 @@ export const productRouter = express.Router()
 productRouter.post('/add',upload.array("images",4),product.addProduct)
 
 // Route to fetch a product (GET requests to getId using the "getById" function)
-productRouter.get('/getId',product.getById)
+productRouter.get('/getId/:id',product.getById)
 
 // Route to delete a product (DELETE requests to delete using the "deleteProduct" function)
 productRouter.delete('/delete',product.deleteProduct)

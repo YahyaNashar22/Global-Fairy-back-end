@@ -20,7 +20,7 @@ addProduct: async (req, res) => {
 
 // Controller function to fetch a product
 getById: async (req, res) => {
-    const { id } = req.body
+    const { id } = req.params
     try {
         const product = await Product.findById(id).populate(['brand','category','subCategory']);
         if(!product){
