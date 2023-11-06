@@ -20,7 +20,7 @@ productRouter.put('/update',upload.array('images',4),product.editProduct)
 productRouter.get('/get',product.getAll)
 
 // Route to fetch products by category (GET requests to category using the "getByCategory" function)
-productRouter.get('/category',product.getByCategory)
+productRouter.get('/category/:id',product.getByCategory)
 
 // Route to fetch products by category and brand (GET requests to category-brand using the "getByCategoryAndBrand" function)
 productRouter.get('/category-brand',product.getByCategoryAndBrand)

@@ -22,7 +22,7 @@ addProduct: async (req, res) => {
 getById: async (req, res) => {
     const { id } = req.body
     try {
-        const product = await Product.findById(id);
+        const product = await Product.findById(id).populate(['brand','category','subCategory']);
         if(!product){
             res.status(400).json("Product Not Found")
         }
@@ -35,7 +35,7 @@ getById: async (req, res) => {
 
 // Controller function to delete a product
 deleteProduct: async (req, res) => { 
-    const { id } = req.body
+    const { id } = req.query
     try {
         const deletedProduct = await Product.findByIdAndRemove(id);
         if (!deletedProduct) {
@@ -105,7 +105,7 @@ getAll: async (req, res) => {
 
 // Controller function to fetch products by category
 getByCategory: async (req, res) => {
-    let category = req.body.category;
+    let category = req.params.id;
     try {
         const products = await Product.find({ category: category })
         res.status(200).json(products)
