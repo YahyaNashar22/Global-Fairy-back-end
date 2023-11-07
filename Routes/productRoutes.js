@@ -30,3 +30,5 @@ productRouter.post('/filter',product.getByFilter)
 
 //Update the stock of a product
 productRouter.put('/updateStock',productController.updateProductStock)
+
+productRouter.get('/getFour/:category',productController.getFour)

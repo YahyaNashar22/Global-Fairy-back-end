@@ -149,12 +149,11 @@ getByFilter: async (req, res) => {
             const priceConditions=[]
             priceRange.forEach(range => 
                 {
-                if(range===1){priceConditions.push({"price": { $gt: 0,$lte:15 }})}
-                if(range===2){priceConditions.push({"price": { $gt: 15,$lte:30 }})}
+                if(Number(range)===1){priceConditions.push({"price": { $gt: 0,$lte:15 }})}
+                if(Number(range)===2){priceConditions.push({"price": { $gt: 15,$lte:30 }})}
 
-                if(range===3){priceConditions.push({"price": { $gt: 30,$lte:45 }})}
-
-                if(range===4){priceConditions.push({"price": { $gt: 45 }})}
+                if(Number(range)===3){priceConditions.push({"price": { $gt: 30,$lte:45 }})}
+                if(Number(range)===4){priceConditions.push({"price": { $gt: 45 }})}
 
             })
             conditions.push({$or:priceConditions})     
@@ -182,6 +181,19 @@ updateProductStock:async (req,res)=>{
     const productUpdated=await product.save()
 
     res.status(200).json(productUpdated)
+
+}
+catch(error){
+    res.status(404).json({ status: 400, error: error.message })
+
+}
+},
+getFour:async (req,res)=>{
+    try{
+    const {category}=req.params
+    
+const products=Product.find({category:category}).limit(4)
+    res.status(200).json(products)
 
 }
 catch(error){
