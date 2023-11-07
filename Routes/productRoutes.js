@@ -26,7 +26,7 @@ productRouter.get('/category/:id',product.getByCategory)
 productRouter.get('/category-brand',product.getByCategoryAndBrand)
 
 // Route to filter products based on various criteria (POST requests to filter using the "getByFilter" function)
-productRouter.get('/filter',product.getByFilter)
+productRouter.post('/filter',product.getByFilter)
 
 //Update the stock of a product
 productRouter.put('/updateStock',productController.updateProductStock)
