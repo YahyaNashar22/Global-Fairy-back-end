@@ -171,16 +171,21 @@ getByFilter: async (req, res) => {
 },
 updateProductStock:async (req,res)=>{
     try{
-    const {id,stockChange,color}=req.body
-    const product=await Product.findById(id)
-    const colorIndex=product.details.findIndex(elt=>elt.color===color)
-    if(colorIndex===-1){
-        return res.status(400).json("color not found")
-    }
-   product.details[colorIndex].stock-=stockChange
-    const productUpdated=await product.save()
+//     const {id,stockChange,color}=req.body
+//     const product=await Product.findById(id)
+//     const colorIndex=product.details.findIndex(elt=>elt.color===color)
+//     if(colorIndex===-1){
+//         return res.status(400).json("color not found")}
+//    product.details[colorIndex].stock-=stockChange
+//     const productUpdated=await product.save()
+//     res.status(200).json(productUpdated)
+const {id,stockChange,index}=req.params
+const product=await Product.findById(id)
 
-    res.status(200).json(productUpdated)
+product.details[Number(index)].stock-=stockChange
+const productUpdated=await product.save()
+res.status(200).json(productUpdated)
+
 
 }
 catch(error){

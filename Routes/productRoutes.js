@@ -29,6 +29,6 @@ productRouter.get('/category-brand',product.getByCategoryAndBrand)
 productRouter.post('/filter',product.getByFilter)
 
 //Update the stock of a product
-productRouter.put('/updateStock',productController.updateProductStock)
+productRouter.put('/updateStock/:id/:index/:stockChange',productController.updateProductStock)
 
 productRouter.get('/getFour/:category',productController.getFour)
