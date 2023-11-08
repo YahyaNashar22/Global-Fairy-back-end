@@ -198,7 +198,7 @@ getFour:async (req,res)=>{
     try{
     const {category}=req.params
     
-const products=Product.find({category:category}).limit(4)
+const products=await Product.find({category:category}).limit(4)
     res.status(200).json(products)
 
 }
