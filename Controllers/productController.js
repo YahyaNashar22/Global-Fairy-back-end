@@ -7,7 +7,8 @@ export const productController = {
 // Controller function to add a new product
 addProduct: async (req, res) => {
     const { name, description, price, detail, brand, category, subCategory } = req.body
-    const images=req.files.map(image => image.path);
+    const images=req.files
+    images.map(image => image.path);
     const details= JSON.parse(detail)
     try {
         const product = await Product.create({ name, description,details, price,images, brand, category, subCategory })
