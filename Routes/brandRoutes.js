@@ -15,7 +15,7 @@ brandRouter.get('/readone', getBrand);
 // Route to delete a brand (DELETE requests to delete using the "deleteBrand" function)
 brandRouter.delete('/delete', deleteBrand);
 
-brandRouter.get('/getCategories',getBrandCategories)
+brandRouter.get('/getCategories/:id',getBrandCategories)
 
 brandRouter.get('/brandscategory',categoryBrands)
 
