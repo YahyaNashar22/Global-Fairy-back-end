@@ -61,7 +61,7 @@ const deleteBrand = async(req, res) => {
 
  // Controller function to get the categories name of the brand
  const getBrandCategories = async (req, res) => {
-    const id = req.body.id
+    const id = req.params
     try {
         const brand = await Brand.findById(id).populate("categories")
         const BrandCategories = brand.categories.map(category => category.name)
