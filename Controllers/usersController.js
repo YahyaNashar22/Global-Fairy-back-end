@@ -5,7 +5,6 @@ import { createToken, verifyToken } from "../utils/token.js";
 // Sign up function
 export const signup = async (req, res) => {
   const { name, email, password, role } = req.body;
-  const image = req.file.filename;
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
   try {
@@ -14,7 +13,7 @@ export const signup = async (req, res) => {
       email,
       password: hash,
       role,
-      image,
+      picture: req.file.filename,
     });
     await newUser.save();
     const token = createToken(newUser);
@@ -95,17 +94,34 @@ export const getOne = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const id = req.params.id;
-  image = req.file.filename;
-  const salt = await bcrypt.genSalt();
-  const hashedPassword = await bcrypt.hash(req.body.Password, salt);
   try {
     const { name, email, password } = req.body;
-    await UserSchema.update(
-      { name, email, password: hashedPassword, image: image },
-      {
-        where: { id },
-      }
-    );
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    if (req.file) {
+      await UserSchema.findByIdAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            name: name,
+            email: email,
+            password: hash,
+            picture: req.file.filename,
+          },
+        }
+      );
+    } else {
+      await UserSchema.findByIdAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            name: name,
+            email: email,
+            password: hash,
+          },
+        }
+      );
+    }
     return res.status(200).json({ message: "user updated successfully" });
   } catch (err) {
     console.log(err);
@@ -118,7 +134,7 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   const id = req.params.id;
   try {
-    await UserSchema.destroy({ where: { id } });
+    await UserSchema.deleteOne({ _id: id });
     res.status(200).json({ message: "user deleted successfully" });
   } catch (err) {
     console.log(err);

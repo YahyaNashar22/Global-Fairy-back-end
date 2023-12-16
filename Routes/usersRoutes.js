@@ -14,11 +14,11 @@ export const userRouter = express.Router();
 
 userRouter.post("/signup", upload.single("picture"), signup);
 userRouter.post("/login", login);
-userRouter.get("/getone:id", getOne);
+userRouter.get("/getone", getOne);
 
 userRouter.get("/logout", logout);
 userRouter.get("/getall", getAll);
 
-userRouter.put("/:id", updateUser);
+userRouter.patch("/:id", upload.single("picture"), updateUser);
 
 userRouter.delete("/:id", deleteUser);
