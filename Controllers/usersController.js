@@ -5,6 +5,7 @@ import { createToken, verifyToken } from "../utils/token.js";
 // Sign up function
 export const signup = async (req, res) => {
   const { name, email, password, role } = req.body;
+  const picture = req.file.filename;
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
   try {
@@ -13,7 +14,7 @@ export const signup = async (req, res) => {
       email,
       password: hash,
       role,
-      picture: req.file.filename,
+      picture: picture,
     });
     await newUser.save();
     const token = createToken(newUser);
@@ -27,6 +28,7 @@ export const signup = async (req, res) => {
       })
       .json({ message: "user created successfully", decoded });
   } catch (err) {
+    console.log(err);
     res.status(401).send("Something went wrong !");
   }
 };
