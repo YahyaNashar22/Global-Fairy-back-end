@@ -26,7 +26,7 @@ export const signup = async (req, res) => {
         httpOnly: true,
         sameSite: "None",
       })
-      .json({ message: "user created successfully", decoded });
+      .json({ message: "user created successfully", token: decoded });
   } catch (err) {
     console.log(err);
     res.status(401).send("Something went wrong !");
@@ -36,7 +36,7 @@ export const signup = async (req, res) => {
 // Log in function
 export const login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await UserSchema.findOne({ where: { email: email } });
+  const user = await UserSchema.findOne({ email: email });
   if (!user) {
     return res.status(401).send("user not found !");
   } else {
@@ -51,7 +51,7 @@ export const login = async (req, res) => {
             sameSite: "None",
           })
           .status(200)
-          .json({ message: "user logged in successfully", decoded });
+          .json({ message: "user logged in successfully", token: decoded });
       }
     } catch (error) {
       console.log(err);
