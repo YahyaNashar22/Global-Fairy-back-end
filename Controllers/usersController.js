@@ -82,10 +82,24 @@ export const getAll = async (req, res) => {
 
 // Fetch one user by ID
 export const getOne = async (req, res) => {
-  const email = req.body.email;
+  const token = req.cookies.userToken;
+  const decoded = verifyToken(token);
+  const id = decoded.data?.id;
   try {
-    const user = await UserSchema.findOne({ email: email });
-    res.status(200).json(user);
+    if (!id) {
+      return res.status(400).json({ error: "NO Token!!!!!!!" });
+    }
+    const user = await UserSchema.findById(id);
+    if (user) {
+      return res.json({
+        Picture: user.picture,
+        Role: user.role,
+        id: user._id,
+        name: user.name,
+      });
+    } else {
+      return res.status(404).json({ error: "User Not Found!" });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Couldn't find user" });
