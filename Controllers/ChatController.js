@@ -56,3 +56,14 @@ export const sendChatMessage = async (req, res)=>{
 
       res.status(200).json(room.chat);
     } 
+
+export const getAllRooms = async (req, res) =>{
+    try{
+    const allRooms = await Room.find({});
+    res.status(200).json(allRooms);
+    } catch (err){
+        console.log(err.message);
+        res.status(500).json({error: "can't fetch rooms...1"});
+    }
+ 
+}
