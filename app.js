@@ -10,6 +10,7 @@ import { subCategoryRouter } from "./Routes/subCategoryRoutes.js";
 import { contactRouter } from "./Routes/ContactRoutes.js";
 import { userRouter } from "./Routes/usersRoutes.js";
 import cors from "cors";
+import chatRouter from "./Routes/ChatRoutes.js";
 
 const app = express();
 app.use(cookieParser());
@@ -39,3 +40,4 @@ app.use("/subcategory", subCategoryRouter);
 app.use("/contact", contactRouter);
 app.use("/user", userRouter);
 app.use("/Images", express.static("Images"));
+app.use("/chat", chatRouter);
