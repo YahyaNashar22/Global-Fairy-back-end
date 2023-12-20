@@ -11,13 +11,17 @@ const userModelSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: false,
   },
   role: {
     type: String,
     required: true,
   },
   picture: {
+    type: String,
+    required: false,
+  },
+  photourl: {
     type: String,
     required: false,
   },

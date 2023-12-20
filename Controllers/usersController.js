@@ -4,7 +4,9 @@ import { createToken, verifyToken } from "../utils/token.js";
 
 // Sign up function
 export const signup = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, role, photourl } = req.body;
+  const generatedPassword = "random";
+  const password = req.body.password || generatedPassword;
   const picture = req.file.filename;
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
@@ -15,6 +17,40 @@ export const signup = async (req, res) => {
       password: hash,
       role,
       picture: picture,
+      photourl,
+    });
+    await newUser.save();
+    const token = createToken(newUser);
+    const decoded = verifyToken(token);
+    res
+      .status(200)
+      .cookie("userToken", token, {
+        secure: true,
+        httpOnly: true,
+        sameSite: "None",
+      })
+      .json({ message: "user created successfully", token: decoded });
+  } catch (err) {
+    console.log(err);
+    res.status(401).send("Something went wrong !");
+  }
+};
+//Google Auth
+export const gsignup = async (req, res) => {
+  const { name, email, role, photourl } = req.body;
+  const generatedPassword = "random";
+  const password = req.body.password || generatedPassword;
+  const picture = req.file;
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+  try {
+    const newUser = new UserSchema({
+      name,
+      email,
+      password: hash,
+      role,
+      picture: picture,
+      photourl,
     });
     await newUser.save();
     const token = createToken(newUser);
@@ -96,6 +132,7 @@ export const getOne = async (req, res) => {
         Role: user.role,
         id: user._id,
         name: user.name,
+        photourl: user.photourl,
       });
     } else {
       return res.status(404).json({ error: "User Not Found!" });
