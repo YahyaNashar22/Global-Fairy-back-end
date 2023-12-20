@@ -3,10 +3,10 @@ import { Chat, Room } from '../Models/chatModel.js';
 
 
 export const createRoom = async (req,res)=>{
-    const {name, email, userid} = req.body;
+    const {name, userid} = req.body;
 
     try{
-        await UserSchema.findOne({email:email});
+        await UserSchema.findOne({_id: userid});
     } catch (error){
         console.log("invalid user!!!")
         res.send("invalid user!")
@@ -22,7 +22,6 @@ export const createRoom = async (req,res)=>{
 
         const newRoom = new Room({
             name,
-            email,
             userid,
             chat :  [defaultMessage],
           });
@@ -60,7 +59,9 @@ export const sendChatMessage = async (req, res)=>{
 export const getAllRooms = async (req, res) =>{
     try{
     const allRooms = await Room.find({});
+    if(allRooms){
     res.status(200).json(allRooms);
+    }
     } catch (err){
         console.log(err.message);
         res.status(500).json({error: "can't fetch rooms...1"});

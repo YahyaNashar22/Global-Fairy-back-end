@@ -9,7 +9,6 @@ const chatModel = new mongoose.Schema({
   
   const roomModel = new mongoose.Schema({
     name: String,
-    email: String,
     userid: {   
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserSchema',

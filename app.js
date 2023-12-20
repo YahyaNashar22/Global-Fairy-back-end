@@ -11,6 +11,8 @@ import { contactRouter } from "./Routes/ContactRoutes.js";
 import { userRouter } from "./Routes/usersRoutes.js";
 import cors from "cors";
 import chatRouter from "./Routes/ChatRoutes.js";
+import http from "http"; // import http module to create a server
+import { Server } from 'socket.io';
 
 const app = express();
 app.use(cookieParser());
@@ -41,3 +43,45 @@ app.use("/contact", contactRouter);
 app.use("/user", userRouter);
 app.use("/Images", express.static("Images"));
 app.use("/chat", chatRouter);
+
+
+const server = http.createServer(app); // create an HTTP server using express app
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    // origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+
+
+
+io.on('connection', (socket) => {
+  console.log(`User ${socket.id} connected`);
+
+
+  socket.on('create', (room)=> {  
+    if(checkRoom(room)){
+      socket.join(room);
+      console.log(`User ${socket.id} connected to room: ${room}`);
+    } else {
+      console.log("room not found");
+      
+    } 
+
+  })  
+  
+  socket.on('message', (data) => {
+    console.log(data);
+    // socket.broadcast.emit('message', `${socket.id.substring(0, 5)}: ${data}`);
+    socket.to(one).emit('message', `${socket.id.substring(0, 5)}: ${data}`);
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`User ${socket.id} disconnected`);
+    
+  });
+});
+
+io.listen(4500);
