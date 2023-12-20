@@ -13,6 +13,7 @@ import cors from "cors";
 import chatRouter from "./Routes/ChatRoutes.js";
 import http from "http"; // import http module to create a server
 import { Server } from 'socket.io';
+import { Room } from "./Models/chatModel.js";
 
 const app = express();
 app.use(cookieParser());
@@ -54,9 +55,6 @@ const io = new Server(server, {
   }
 });
 
-
-
-
 io.on('connection', (socket) => {
   console.log(`User ${socket.id} connected`);
 
@@ -72,10 +70,14 @@ io.on('connection', (socket) => {
 
   })  
   
-  socket.on('message', (data) => {
-    console.log(data);
-    // socket.broadcast.emit('message', `${socket.id.substring(0, 5)}: ${data}`);
-    socket.to(one).emit('message', `${socket.id.substring(0, 5)}: ${data}`);
+  socket.on('userConnect', (arg)=>{
+    console.log(`user: ${arg} has just connected`);
+  })
+
+  socket.on('message', async(data, userid) => {
+    console.log("message:" ,data, userid);
+    const room = await Room.findOne({userid: userid})
+    socket.to(room).emit('message', `${data}`)
   });
 
   socket.on('disconnect', () => {
