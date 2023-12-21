@@ -3,15 +3,38 @@ import { Chat, Room } from '../Models/chatModel.js';
 
 
 export const createRoom = async (req,res)=>{
+
     const {name, userid} = req.body;
+
+    //a method to clean duplicate rooms for same user if they are ever created.
+    const duplicateObjects = await Room.find({ userid: userid });
+    duplicateObjects.sort((a, b) => a.createdAt - b.createdAt);
+    const objectsToDelete = duplicateObjects.slice(1);
+
+    if (objectsToDelete.length > 0) {
+        const deleteResult = await Room.deleteMany({ _id: { $in: objectsToDelete.map(obj => obj._id) } });
+        console.log(`${deleteResult.deletedCount} objects deleted.`);
+    }
+
+
+
+
+    
 
     try{
         await UserSchema.findOne({_id: userid});
     } catch (error){
         console.log("invalid user!!!")
         res.send("invalid user!")
+        return
     }
-    const room = await Room.findOne({userid: userid})
+
+    let room;
+    try{
+     room = await Room.findOne({userid: userid})
+    }catch (err){
+        console.log("error finding room: ", err.message)
+    }
 
     if(!room){
 
@@ -28,6 +51,7 @@ export const createRoom = async (req,res)=>{
 
           newRoom.save()
           res.json(newRoom);
+          return
     }
 
     

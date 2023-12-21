@@ -78,6 +78,7 @@ io.on('connection', (socket) => {
     console.log("message:" ,data, userid);
     const room = await Room.findOne({userid: userid})
     socket.to(room).emit('message', `${data}`)
+    // socket.to(room).broadcast.emit('ping');
   });
 
   socket.on('disconnect', () => {
