@@ -58,6 +58,7 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   console.log(`User ${socket.id} connected`);
 
+  const onlineArray = [];
 
   socket.on('create', (room)=> {  
     if(checkRoom(room)){
@@ -78,6 +79,7 @@ io.on('connection', (socket) => {
     console.log("message:" ,data, userid);
     const room = await Room.findOne({userid: userid})
     socket.to(room).emit('message', `${data}`)
+    socket.emit("onlineUsers", onlineArray );
     // socket.to(room).broadcast.emit('ping');
   });
 
@@ -85,6 +87,23 @@ io.on('connection', (socket) => {
     console.log(`User ${socket.id} disconnected`);
     
   });
+
+  socket.on('online', (id)=>{
+    console.log("online became id: ", id)
+    onlineArray.push(id);
+    console.log("online array: ",onlineArray)
+    socket.emit("onlineUsers", onlineArray );
+  })
+
+  socket.on('offline', (id)=>{
+    console.log("offline id: ", id)
+    const index = onlineArray.indexOf(id);
+    onlineArray.splice(index, 1);
+  })
+  console.log("online array: ",onlineArray)
 });
 
 io.listen(4500);
+
+
+
