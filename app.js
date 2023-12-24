@@ -55,17 +55,37 @@ const io = new Server(server, {
   }
 });
 
+let onlineArray=[];
+
 io.on('connection', (socket) => {
   console.log(`A User connected`);
+
+  socket.on("userConnected", (name, id)=>{
+    if(!onlineArray.find(item => item.id ===id)){
+      onlineArray.push({id, name});
+      socket.local.emit("updateOnline", onlineArray);
+      console.log(`${name} has went online!!!`)
+    console.log(onlineArray);
+    }
+  })
+
+  socket.on("userDisconnected", (name, id)=>{
+    onlineArray = onlineArray.filter(item => item.id !== id);
+    socket.local.emit("updateOnline", onlineArray);
+    console.log(`${name} has went offline`)
+    console.log(onlineArray);
+  })
 
   socket.on("joinRoom", (room, user)=>{
     socket.join(room);
     console.log(`${user} has joined room: `, room);
+
   })
 
   socket.on("leaveRoom", (room, user)=>{
     socket.leave(room);
     console.log(`${user} has left room!`)
+
   })
 
   socket.on('message', (data, room) => {

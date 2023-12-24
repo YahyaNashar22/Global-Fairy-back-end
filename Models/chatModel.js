@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const chatModel = new mongoose.Schema({
     text: String,
     sender: String,
-  });
+  },{timestamps: true});
   
   const roomModel = new mongoose.Schema({
     name: String,
