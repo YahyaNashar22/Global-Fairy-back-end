@@ -56,51 +56,44 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log(`User ${socket.id} connected`);
+  console.log(`A User connected`);
 
-  const onlineArray = [];
-
-  socket.on('create', (room)=> {  
-    if(checkRoom(room)){
-      socket.join(room);
-      console.log(`User ${socket.id} connected to room: ${room}`);
-    } else {
-      console.log("room not found");
-      
-    } 
-
-  })  
-  
-  socket.on('userConnect', (arg)=>{
-    console.log(`user: ${arg} has just connected`);
+  socket.on("joinRoom", (room, user)=>{
+    socket.join(room);
+    console.log(`${user} has joined room: `, room);
   })
 
-  socket.on('message', async(data, userid) => {
-    console.log("message:" ,data, userid);
-    const room = await Room.findOne({userid: userid})
-    socket.to(room).emit('message', `${data}`)
-    socket.emit("onlineUsers", onlineArray );
-    // socket.to(room).broadcast.emit('ping');
+  socket.on("leaveRoom", (room, user)=>{
+    socket.leave(room);
+    console.log(`${user} has left room!`)
+  })
+
+  socket.on('message', (data, room) => {
+    
+    socket.to(room).emit('message', data)
+
+    console.log("message:" ,data);
+    // socket.emit("onlineUsers", onlineArray );
   });
 
   socket.on('disconnect', () => {
-    console.log(`User ${socket.id} disconnected`);
+    console.log(`A User disconnected`);
     
   });
 
-  socket.on('online', (id)=>{
-    console.log("online became id: ", id)
-    onlineArray.push(id);
-    console.log("online array: ",onlineArray)
-    socket.emit("onlineUsers", onlineArray );
-  })
+  // socket.on('online', (id)=>{
+  //   console.log("online became id: ", id)
+  //   onlineArray.push(id);
+  //   console.log("online array: ",onlineArray)
+  //   socket.emit("onlineUsers", onlineArray );
+  // })
 
-  socket.on('offline', (id)=>{
-    console.log("offline id: ", id)
-    const index = onlineArray.indexOf(id);
-    onlineArray.splice(index, 1);
-  })
-  console.log("online array: ",onlineArray)
+  // socket.on('offline', (id)=>{
+  //   console.log("offline id: ", id)
+  //   const index = onlineArray.indexOf(id);
+  //   onlineArray.splice(index, 1);
+  // })
+  // console.log("online array: ",onlineArray)
 });
 
 io.listen(4500);
