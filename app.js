@@ -93,7 +93,6 @@ io.on('connection', (socket) => {
     socket.to(room).emit('message', data)
 
     console.log("message:" ,data);
-    // socket.emit("onlineUsers", onlineArray );
   });
 
   socket.on('disconnect', () => {
@@ -101,19 +100,6 @@ io.on('connection', (socket) => {
     
   });
 
-  // socket.on('online', (id)=>{
-  //   console.log("online became id: ", id)
-  //   onlineArray.push(id);
-  //   console.log("online array: ",onlineArray)
-  //   socket.emit("onlineUsers", onlineArray );
-  // })
-
-  // socket.on('offline', (id)=>{
-  //   console.log("offline id: ", id)
-  //   const index = onlineArray.indexOf(id);
-  //   onlineArray.splice(index, 1);
-  // })
-  // console.log("online array: ",onlineArray)
 });
 
 io.listen(4500);
