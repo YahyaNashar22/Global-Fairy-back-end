@@ -44,25 +44,41 @@ export const gsignup = async (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
   try {
-    const newUser = new UserSchema({
-      name,
-      email,
-      password: hash,
-      role,
-      picture: picture,
-      photourl,
-    });
-    await newUser.save();
-    const token = createToken(newUser);
-    const decoded = verifyToken(token);
-    res
-      .status(200)
-      .cookie("userToken", token, {
-        secure: true,
-        httpOnly: true,
-        sameSite: "None",
-      })
-      .json({ message: "user created successfully", token: decoded });
+    // handles an already authenticated account
+    const user = await UserSchema.findOne({ email: email });
+    if (user) {
+      const token = createToken(user);
+      const decoded = verifyToken(token);
+      res
+        .cookie("userToken", token, {
+          secure: true,
+          httpOnly: true,
+          sameSite: "None",
+        })
+        .status(200)
+        .json({ message: "user logged in successfully", token: decoded });
+      //
+    } else {
+      const newUser = new UserSchema({
+        name,
+        email,
+        password: hash,
+        role,
+        picture: picture,
+        photourl,
+      });
+      await newUser.save();
+      const token = createToken(newUser);
+      const decoded = verifyToken(token);
+      res
+        .status(200)
+        .cookie("userToken", token, {
+          secure: true,
+          httpOnly: true,
+          sameSite: "None",
+        })
+        .json({ message: "user created successfully", token: decoded });
+    }
   } catch (err) {
     console.log(err);
     res.status(401).send("Something went wrong !");
